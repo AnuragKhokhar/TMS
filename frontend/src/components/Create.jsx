@@ -9,6 +9,7 @@ function Create() {
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
 
   const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ function Create() {
     }
 
     try {
+      setLoading(true); // Start loading
       const addUser = { name, course, venue, startDate, endDate };
       const apiResponse = await fetch("https://tms-st89.onrender.com/api/user/createuser", {
         method: "POST",
@@ -34,6 +36,7 @@ function Create() {
 
       if (!apiResponse.ok) {
         setError(result.error || "Something went wrong");
+        setLoading(false); // Stop loading
         return;
       }
 
@@ -44,10 +47,12 @@ function Create() {
       setVenue("");
       setStartDate("");
       setEndDate("");
+      setLoading(false); // Stop loading
       navigate("/");
     } catch (err) {
       console.error(err);
       setError("Failed to submit the form. Please try again.");
+      setLoading(false); // Stop loading
     }
   };
 
@@ -123,8 +128,14 @@ function Create() {
           />
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-          Submit
+        <button
+          type="submit"
+          className={`w-full p-2 rounded ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+          disabled={loading}
+        >
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

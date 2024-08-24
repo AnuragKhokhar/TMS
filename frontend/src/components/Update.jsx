@@ -10,12 +10,14 @@ function Update() {
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false); // Loading state
 
   const navigate = useNavigate();
   const { id } = useParams();
 
   const getUserData = async () => {
     try {
+      setLoading(true); // Start loading
       const response = await fetch(
         `https://tms-st89.onrender.com/api/user/userdetails/${id}`,
         {
@@ -38,9 +40,11 @@ function Update() {
         setStartDate(result.data?.startDate || "");
         setEndDate(result.data?.endDate || "");
       }
+      setLoading(false); // Stop loading
     } catch (err) {
       console.error("Failed to fetch user data", err);
       setError("Failed to fetch user data");
+      setLoading(false); // Stop loading
     }
   };
 
@@ -53,6 +57,7 @@ function Update() {
 
     const addUser = { name, course, venue, startDate, endDate };
     try {
+      setLoading(true); // Start loading
       const response = await fetch(
         `https://tms-st89.onrender.com/api/user/updateuser/${id}`,
         {
@@ -82,9 +87,11 @@ function Update() {
 
         navigate("/");
       }
+      setLoading(false); // Stop loading
     } catch (err) {
       console.error("Failed to update user data", err);
       setError("Failed to update user data");
+      setLoading(false); // Stop loading
     }
   };
 
@@ -112,6 +119,7 @@ function Update() {
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            disabled={loading} // Disable input during loading
           />
         </div>
         <div className="mb-4">
@@ -122,6 +130,7 @@ function Update() {
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={course}
             onChange={(e) => setCourse(e.target.value)}
+            disabled={loading} // Disable input during loading
           />
         </div>
         <div className="mb-4">
@@ -132,6 +141,7 @@ function Update() {
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
+            disabled={loading} // Disable input during loading
           />
         </div>
         <div className="mb-4">
@@ -142,6 +152,7 @@ function Update() {
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            disabled={loading} // Disable input during loading
           />
         </div>
         <div className="mb-4">
@@ -152,11 +163,18 @@ function Update() {
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            disabled={loading} // Disable input during loading
           />
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-          Submit
+        <button
+          type="submit"
+          className={`w-full p-2 rounded ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+          disabled={loading} // Disable button during loading
+        >
+          {loading ? "Loading..." : "Submit"}
         </button>
       </form>
     </div>

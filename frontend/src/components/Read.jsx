@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Read() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ function Read() {
   }, []);
 
   const handleDelete = async (id) => {
+    setLoading(true); // Start loading
     const response = await fetch(
       `https://tms-st89.onrender.com/api/user/deleteuser/${id}`,
       {
@@ -47,6 +49,7 @@ function Read() {
         getData();
       }, 2000);
     }
+    setLoading(false); // Stop loading
   };
 
   const handlePageChange = (pageNumber) => {
@@ -98,7 +101,7 @@ function Read() {
           </button>
         </div>
         <div className="px-5">
-        <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden ">
+        <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
           <thead>
             <tr className="bg-green-400 text-white h-1">
               <th className="px-6 py-3 text-left border-b border-r border-gray-300">S.No.</th>
@@ -123,18 +126,19 @@ function Read() {
                 <td className="px-6 py-4 border-r border-gray-300 font-semibold">
                   {formatDateRange(training.endDate)}
                 </td>
-                <td className="px-6 py-4 flex space-x-4 ">
+                <td className="px-6 py-4 flex space-x-4">
                   <Link
                     to={`/update/${training._id}`}
-                    className="text-blue-500 hover:underline "
+                    className="text-blue-500 hover:underline"
                   >
                     Edit
                   </Link>
                   <button
                     className="text-red-500 hover:underline"
                     onClick={() => handleDelete(training._id)}
+                    disabled={loading} // Disable delete button when loading
                   >
-                    Delete
+                    {loading ? "Deleting..." : "Delete"} {/* Show loading text */}
                   </button>
                 </td>
               </tr>
