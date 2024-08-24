@@ -12,11 +12,14 @@ app.use(express.json());
 mongoose.connect(process.env.URI).then(() => {
     console.log("connected successfully");
 
-    app.listen(process.env.PORT || 8000, (error) => {
-        if (error) console.log(error);
-
-        console.log("connected successfully at", process.env.PORT)
-    })
+    app.listen(process.env.PORT || 8000, '0.0.0.0', (error) => {
+        if (error) {
+            console.error('Failed to start server:', error);
+        } else {
+            console.log(`Server is running on http://0.0.0.0:${process.env.PORT || 8000}`);
+        }
+    });
+    
 
 }).catch((error) => {
     console.error('error', error)
