@@ -29,7 +29,7 @@ function Read() {
 
   const handleDelete = async (id) => {
     const response = await fetch(
-      `http://localhost:5000/api/user/deleteuser/${id}`,
+      `https://tms-st89.onrender.com/api/user/deleteuser/${id}`,
       {
         method: "DELETE",
       }
