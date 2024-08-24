@@ -52,78 +52,78 @@ function Create() {
   };
 
   return (
-    <div className="container my-2">
+    <div className="container mx-auto my-4 p-4 max-w-lg">
       {error && (
-        <div className="alert alert-danger" role="alert">
+        <div className="mb-4 p-4 text-red-700 bg-red-100 border border-red-400 rounded">
           {error}
         </div>
       )}
       {response && (
-        <div className="alert alert-success" role="alert">
+        <div className="mb-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
           {response}
         </div>
       )}
 
-      <h2>Enter the Data</h2>
+      <h2 className="text-2xl font-semibold mb-4">Enter the Data</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Name of the Staff</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Name of the Staff</label>
           <input
             name="name"
             type="text"
-            className="form-control"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">Name of the Course</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Name of the Course</label>
           <input
             name="course"
             type="text"
-            className="form-control"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={course}
             onChange={(e) => setCourse(e.target.value)}
             required
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">Venue</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Venue</label>
           <input
             name="venue"
             type="text"
-            className="form-control"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
             required
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">Start Date</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Start Date</label>
           <input
             name="startDate"
             type="date"
-            className="form-control"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             required
           />
         </div>
-        <div className="mb-3">
-          <label className="form-label">End Date</label>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">End Date</label>
           <input
             name="endDate"
             type="date"
-            className="form-control"
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
             required
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           Submit
         </button>
       </form>

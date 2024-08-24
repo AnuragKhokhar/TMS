@@ -97,8 +97,8 @@ function Read() {
             ADD STAFF
           </button>
         </div>
-
-        <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden p-40">
+        <div className="px-5">
+        <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden ">
           <thead>
             <tr className="bg-green-400 text-white h-1">
               <th className="px-6 py-3 text-left border-b border-r border-gray-300">S.No.</th>
@@ -123,10 +123,10 @@ function Read() {
                 <td className="px-6 py-4 border-r border-gray-300 font-semibold">
                   {formatDateRange(training.endDate)}
                 </td>
-                <td className="px-6 py-4 flex space-x-4">
+                <td className="px-6 py-4 flex space-x-4 ">
                   <Link
                     to={`/update/${training._id}`}
-                    className="text-blue-500 hover:underline"
+                    className="text-blue-500 hover:underline "
                   >
                     Edit
                   </Link>
@@ -141,6 +141,7 @@ function Read() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Pagination */}
