@@ -17,7 +17,7 @@ function Update() {
   const getUserData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/user/userdetails/${id}`,
+        `https://tms-st89.onrender.com/api/user/userdetails/${id}`,
         {
           method: "GET",
         }
@@ -54,7 +54,7 @@ function Update() {
     const addUser = { name, course, venue, startDate, endDate };
     try {
       const response = await fetch(
-        `http://localhost:5000/api/user/updateuser/${id}`,
+        `https://tms-st89.onrender.com/api/user/updateuser/${id}`,
         {
           method: "PATCH",
           body: JSON.stringify(addUser),

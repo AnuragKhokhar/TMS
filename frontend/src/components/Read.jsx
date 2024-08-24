@@ -9,7 +9,7 @@ function Read() {
   const navigate = useNavigate();
 
   async function getData() {
-    const response = await fetch("http://localhost:5000/api/user/userlist", {
+    const response = await fetch("https://tms-st89.onrender.com/api/user/userlist", {
       method: "GET",
     });
     const result = await response.json();
