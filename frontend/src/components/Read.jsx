@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 function Read() {
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); // Loading state for fetching data
+  const [deleteLoading, setDeleteLoading] = useState(false); // Loading state for delete action
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   async function getData() {
+    setLoading(true); // Start loading
     const response = await fetch("https://tms-st89.onrender.com/api/user/userlist", {
       method: "GET",
     });
@@ -22,6 +24,7 @@ function Read() {
       setData(result.data);
       setError("");
     }
+    setLoading(false); // Stop loading
   }
 
   useEffect(() => {
@@ -29,7 +32,7 @@ function Read() {
   }, []);
 
   const handleDelete = async (id) => {
-    setLoading(true); // Start loading
+    setDeleteLoading(true); // Start loading
     const response = await fetch(
       `https://tms-st89.onrender.com/api/user/deleteuser/${id}`,
       {
@@ -49,7 +52,7 @@ function Read() {
         getData();
       }, 2000);
     }
-    setLoading(false); // Stop loading
+    setDeleteLoading(false); // Stop loading
   };
 
   const handlePageChange = (pageNumber) => {
@@ -100,51 +103,65 @@ function Read() {
             ADD STAFF
           </button>
         </div>
-        <div className="px-5">
-        <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
-          <thead>
-            <tr className="bg-green-400 text-white h-1">
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300">S.No.</th>
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300">Name of the Staff</th>
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300">Name of the Course</th>
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300">Venue</th>
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300 whitespace-nowrap">Start Date</th>
-              <th className="px-6 py-3 text-left border-b border-r border-gray-300 whitespace-nowrap">End Date</th>
-              <th className="px-6 py-3 text-left border-b border-gray-300">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((training, index) => (
-              <tr key={training._id} className="border-b border-gray-300 hover:bg-gray-100">
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">{indexOfFirstItem + index + 1}</td>
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">{training.name}</td>
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">{training.course}</td>
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">{training.venue}</td>
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">
-                  {formatDateRange(training.startDate)}
-                </td>
-                <td className="px-6 py-4 border-r border-gray-300 font-semibold">
-                  {formatDateRange(training.endDate)}
-                </td>
-                <td className="px-6 py-4 flex space-x-4">
-                  <Link
-                    to={`/update/${training._id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    className="text-red-500 hover:underline"
-                    onClick={() => handleDelete(training._id)}
-                    disabled={loading} // Disable delete button when loading
-                  >
-                    {loading ? "Deleting..." : "Delete"} {/* Show loading text */}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="w-full overflow-x-auto"> {/* Added w-full for full width and overflow-x-auto for horizontal scroll */}
+          {loading ? (
+            <div className="text-center">Loading...</div>
+          ) : data.length === 0 ? (
+            <div className="text-center">No data found</div>
+          ) : (
+            <table className="min-w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+              <thead>
+                <tr className="bg-green-400 text-white h-1">
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300">S.No.</th>
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300">Name of the Staff</th>
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300">Name of the Course</th>
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300">Venue</th>
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300 whitespace-nowrap">Start Date</th>
+                  <th className="px-6 py-3 text-left border-b border-r border-gray-300 whitespace-nowrap">End Date</th>
+                  <th className="px-6 py-3 text-left border-b border-gray-300">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((training, index) => (
+                  <tr key={training._id} className="border-b border-gray-300 hover:bg-gray-100">
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {indexOfFirstItem + index + 1}
+                    </td>
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {training.name}
+                    </td>
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {training.course}
+                    </td>
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {training.venue}
+                    </td>
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {formatDateRange(training.startDate)}
+                    </td>
+                    <td className="px-6 py-4 border-r border-gray-300 font-semibold">
+                      {formatDateRange(training.endDate)}
+                    </td>
+                    <td className="px-6 py-4 flex space-x-4">
+                      <Link
+                        to={`/update/${training._id}`}
+                        className="text-blue-500 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        className="text-red-500 hover:underline"
+                        onClick={() => handleDelete(training._id)}
+                        disabled={deleteLoading} // Disable delete button when loading
+                      >
+                        {deleteLoading ? "Deleting..." : "Delete"} {/* Show loading text */}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
 
