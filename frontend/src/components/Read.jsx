@@ -92,7 +92,8 @@ function Read() {
         </div>
       )}
 
-      <h2 className="text-3xl font-semibold text-center mb-6">Participation In Training Programs</h2>
+      <h2 className="text-4xl font-semibold text-center mb-6 text-red-600
+      ">Participation In Training Programs(Outside CRRI)</h2>
 
       <div className="overflow-x-auto p-4 rounded-lg shadow-lg bg-white">
         <div className="flex justify-end mb-4">
